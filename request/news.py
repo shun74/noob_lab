@@ -51,30 +51,29 @@ def get_article(url):
             r_article_text = html_text.find(".cmn-article_text",first=True)
             text = []
             for article_text in r_article_text.find("p"):
-                text.append(article_text.text)
+                text.append(article_text.text.replace("、","、\n"))
             article_texts.append("\n".join(text))
         else:
             article_texts.append("No data found.")
 
-    return article_titles, article_texts
+    return article_titles, article_texts, article_links
 
 
-def make_txt(url,name="article"):
-    titles, texts = get_article(url)
+def make_txt(url):
+    titles, texts, urls = get_article(url)
     assert len(titles) == len(texts)
     num = len(titles)
-    # articles = [titles,texts]
-    path = os.path.join("article")
+    path = os.path.join("article_txt")
     os.makedirs(path, exist_ok=True)
-    os.chdir("./article")
+    os.chdir("./article_txt")
     for i in range(num):
         filename = f"{titles[i]}.txt"
         with open(filename, "w",encoding="UTF-8") as f:
-            f.write("Title:")
-            f.write(titles[i])
-            f.write("\n")
+            f.write(f"Title:{titles[i]}\n")
+            f.write(f"URL:{urls[i]}\n")
             f.write("Text:\n")
             f.write(texts[i])
+
 if __name__ == "__main__":
     url = "https://www.nikkei.com/"
     make_txt(url)
