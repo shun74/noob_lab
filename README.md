@@ -1,2 +1,2 @@
-# noob_lab
+# Noob lab
 Noob makes messy codes.
